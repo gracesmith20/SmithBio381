@@ -1,0 +1,10 @@
+---
+title: "Computational Biology"
+author: "Grace Smith"
+date: "2023-01-25"
+output: html_document
+---
+
+# Welcome to my webpage!
+
+## Homework #2
