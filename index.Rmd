@@ -2,9 +2,16 @@
 title: "Computational Biology"
 author: "Grace Smith"
 date: "2023-01-25"
-output: html_document
+output: 
+   html_document:
+    theme: yeti
 ---
 
 # Welcome to my webpage!
+
+Here you'll find links to my homework assignments
+
+And...fun fact: I am a 2021 Long Trail End-to-ender!
+
 
 ## [Homework #2](newpage.html)
