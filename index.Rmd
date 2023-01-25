@@ -7,4 +7,4 @@ output: html_document
 
 # Welcome to my webpage!
 
-## Homework #2
+## [Homework #2](newpage.html)
