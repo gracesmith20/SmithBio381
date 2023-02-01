@@ -1,0 +1,149 @@
+---
+title: "Homework3"
+author: "Grace Smith"
+date: "2023-02-01"
+output: html_document
+---
+
+## Welcome to Homework 3 - Regex
+
+## 1 
+
+Removing more than one space and replacing with a comma
+
+find: `\s{2,}` this command looks for more than 2 consecutive spaces
+
+replace: `,`
+
+First String,Second,1.22,3.4
+Second,More Text,1.555555,2.2220
+Third,x,3,124
+
+
+## 2
+
+Ballif, Bryan, University of Vermont
+Ellison, Aaron, Harvard Forest
+Record, Sydne, Bryn Mawr
+
+find: `^(\w+),\s(\w+),\s(.+)`
+
+`^(w+)` searches for the first word (last name) and excludes it from replacing
+
+`,\s` searches for the comma and space between names to be replaced
+
+`(\w+)` searches for the second word (first name) and excludes it from replacing
+
+`,\s` searches for the comma and space between name and place of work to be replaced
+
+`(.+)` searches for any character except a line break, which captures the multi-word place of work, and exludes from replacing
+
+replace: `\2 \1 (\3)`
+
+This combines the second excluded phrase with the first excluded phrase with a space and a space and parentheses around the third phrase
+
+Bryan Ballif (University of Vermont)
+Aaron Ellison (Harvard Forest)
+Sydne Record (Bryn Mawr)
+
+
+## 3
+
+0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Winder Slide.mp3 0004 Walking Cane.mp3
+
+
+find: `(\d)\s(\d+)`
+
+this searches for digits in a line combined with a space in the middle 
+
+replace: \1\n\2
+
+this replaces the space between digits with a line break
+
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Winder Slide.mp3
+0004 Walking Cane.mp3
+
+## 4
+
+find: `(\d{2,})\s(\w*.+)\.(\w+)`
+
+`(\d{2,})` finds and exludes the first 2 digits
+
+`\s(w*.+)\.` finds the spaces after digits, excludes the string of words and stops at the .
+
+`(\w+)` finds and excludes the mp3
+
+replace: `\2_\1.\3`
+
+pulls the second exclusion (string of words) and combines with the first exclusion(4 digits) with _
+
+followed by . and the third exclustion (mp3)
+
+Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Winder Slide_0003.mp3
+Walking Cane_0004.mp3
+
+
+## 5
+
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+
+find: `(^\w)\w+,(\w+),\d+.\d,(\d*)`
+
+`(^\w)\w+` excludes the first characters and includes the following characters up to the comma
+
+`(\w+)`, excludes the second word and includes the comma
+
+`\d+.\d,` finds the digits combines with a period followed by a comma
+
+`(\d*)` excludes the last digits
+
+replace: `\1_\2,\3`
+
+combines first charater and second word with _ followed by comma and third exclusion(last digits)
+
+
+## 6
+
+find: `(\w_\w{4})\w+(\,\d+)`
+
+first exclusion includes the first character, _, and following 4 characters, includes the rest of the characters up to the second exclusion with includes the , followed by digits
+
+replace: `\1\2`
+
+combines the first character_ 4characters with the ,digits
+
+
+## 7
+
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+
+
+find: `(^\w{3})\w+,(\w{3})\w+,(\d+.\d),(\d*)`
+
+`(^\w{3})\w+,(\w{3})\w+,` searches for the first three letters of the first and second words and removes the rest of the characters and comma
+
+`(\d+.\d),` searches for the digits combined with a period followed by a comma
+
+`(\d*)` searches for the last digits
+
+replace: `\1\2, \4, \3`
+
+combines the first three characters of each word, followed by a comma, space and the digits with a period and lastly a space and the last digits
+
+result: 
+
+Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3
+
