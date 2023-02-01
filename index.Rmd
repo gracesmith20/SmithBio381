@@ -15,3 +15,5 @@ And...fun fact: I am a 2021 Long Trail End-to-ender!
 
 
 ## [Homework #2](newpage.html)
+
+## [Homework #3](homework3.html)
