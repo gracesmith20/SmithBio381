@@ -1,0 +1,108 @@
+---
+title: 'Homework #4'
+author: "Grace Smith"
+date: "2023-02-08"
+output: html_document
+---
+
+## Question 1
+Suppose x = 1.1, a = 2.2, and b = 3.3.
+
+Assign each expression to the value of the variable z and print the value stored in z.
+
+
+```{r, echo=TRUE}
+x<-1.1
+a<-2.2
+b<-3.3
+
+#a
+z <- x^(a^b)
+print(z)
+
+#b
+z<-(x^a)^b
+print(z)
+
+#c
+z<-(3*(x^3))+(2*(x^2))+1
+print(z)
+
+
+```
+
+## Question 2
+
+Using the rep and seq functions, create the following vectors:
+
+a. (1,2,3,4,5,6,7,8,7,6,5,4,3,2,1)
+
+b. (1,2,2,3,3,3,4,4,4,4,5,5,5,5,5)
+
+c. (5,4,4,3,3,3,2,2,2,2,1,1,1,1,1)
+```{r, echo=TRUE}
+a <- c(seq(from = 1, to = 8), seq(from = 7, to = 1))
+print(a)
+
+b<-rep(1:5, times = 1:5)
+print(b)
+
+c<-rep(5:1, times = 1:5)
+print(c)
+
+
+```
+
+## Question 3
+Create a vector of two random uniform numbers. In a spatial map, these can be interpreted as x and y coordinates that give the location of an individual (such as a marked forest tree in a plot that has been mapped). Using one of R’s inverse trigonometry functions (asin(), acos(), or atan()), convert these numbers into polar coordinates (If you don’t know what polar coordinates are, read about them on the web here, here, or in your calculus textbook).
+```{r}
+
+v <- runif(2)
+
+pc<- c(sqrt((v[1]^2)+(v[2]^2)), atan((v[2]/v[1])))
+
+```
+
+
+## Question 4
+Create a vector queue <- c("sheep", "fox", "owl", "ant") where queue represents the animals that are lined up to enter Noah’s Ark, with the sheep at the front of the line. Using R expressions, update queue as:
+
+the serpent arrives and gets in line;
+
+the sheep enters the ark;
+
+the donkey arrives and talks his way to the front of the line;
+
+the serpent gets impatient and leaves;
+
+the owl gets bored and leaves;
+
+the aphid arrives and the ant invites him to cut in line.
+
+Finally, determine the position of the aphid in the line.
+
+```{r}
+queue <- c("sheep", "fox", "owl", "ant")
+queue <- c(queue, "serpent")
+queue <- queue[2:5]
+queue <- c("donkey", queue)
+queue <- queue[1:4]
+queue <- c(queue[1:2], queue[4])
+queue <- c(queue[1:2], "aphid", queue[3])
+
+
+which(queue == "aphid")
+#aphid is third in line
+
+```
+
+## Question 5
+Use R to create a vector of all of the integers from 1 to 100 that are not divisible by 2, 3, or 7. You will need one of the arithmetic operators on this cheat sheet.
+```{r}
+q <- c(1:100)
+which(q%%3 !=0 & q%%2!=0 & q%%7!=0)
+
+
+
+```
+
