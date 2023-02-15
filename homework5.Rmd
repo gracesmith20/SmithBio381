@@ -1,0 +1,95 @@
+---
+title: "Homework 5"
+author: "Grace Smith"
+date: "2023-02-15"
+output: html_document
+---
+
+## Question 1
+
+```{r}
+x<-c(3:10)
+n_dims <- sample(x, size = 1) #randomly select one integer from x
+print(n_dims)
+
+a <- rep(1:n_dims^2) #create vector from 1 to n_dims^2
+print(a)
+
+a <- sample(x=a) #reshuffle a
+print(a)
+
+amat <- matrix(data = a, nrow = n_dims) #create matrix with 'a' vector
+print(amat)
+
+t_amat <- t(amat) #transpose matrix
+print(t_amat)
+#using t(x) flips columns and rows i.e. row 1 in amat is column 1 in t_amat
+
+sum(t_amat[1,]) #sum of row 1
+mean(t_amat[1,]) #mean of row 1
+
+sum(t_amat[5,]) #sum of row 5
+mean(t_amat[5,]) #mean of row 5
+
+eigen <- eigen(t_amat, symmetric = TRUE, only.values = FALSE, EISPACK = FALSE) #eigenvalues and eigenvectors can be used to interpret the direction(vector) and magnitude(value) of the data within the matrix
+print(eigen)
+typeof(eigen$values)
+typeof(eigen$vectors)
+```
+
+## Question 2
+
+```{r}
+set.seed(40)
+my_matrix <- matrix(runif(16), nrow = 4) #create 4x4 matrix with random uniform numbers
+print(my_matrix)
+
+z <- runif(100) #create vector of 100 random values
+my_logical <- z>.5 #use inequality to assign true false values
+print(my_logical)
+
+my_letters <- sample(letters, replace = FALSE) #create vector with random letters
+print(my_letters)
+
+my_list <- list(my_matrix, my_logical, my_letters) #join elements above in a list
+print(my_list)
+
+new_list <- list(my_matrix[2,2], my_logical[2], my_letters[2]) #create new list with element [2,2] from matrix, second element of my_logical, second letter in my_letters
+print(new_list)
+
+
+typeof(new_list[[1]]) #double, numeric
+typeof(new_list[[2]])#logical 
+typeof(new_list[[3]])#character
+
+c_list <- c(new_list[[1]], new_list[[2]], new_list[[3]])
+print(c_list)
+typeof(c_list) #joins elements in a character vector
+
+```
+
+## Question 3
+
+```{r}
+my_unis <- sample(0:10, 26, replace = TRUE) #create vector of 26 random values 0:10
+print(my_unis)
+
+my_Letters <- sample(LETTERS, 26) #create vector 26 random LETTERS
+
+
+df <- data.frame(my_unis, my_Letters) #create dataframe combining my_unis and my_Letters
+print(df)
+dim(df) #26 rows, 2 columns, looks good!
+
+df$my_unis[sample(nrow(df),4)]<-NA #replace 4 random values in df$my_unis with NA
+print(df)
+
+which(is.na(df$my_unis)) #what rows have NA value
+
+df1<-df[order(df$my_Letters),] #reorder df in alphabetical order
+print(df1)
+
+mean(df$my_unis, na.rm = TRUE)
+
+```
+
