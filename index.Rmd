@@ -11,7 +11,7 @@ output:
 
 Here you'll find links to my homework assignments
 
-And...fun fact: I am a 2021 Long Trail End-to-ender!
+And...fun fact: I am a 2021 Long Trail End-to-ender!!
 
 
 ## [Homework #2](newpage.html)
@@ -25,6 +25,8 @@ And...fun fact: I am a 2021 Long Trail End-to-ender!
 ## [Homework #6](homework6.html)
 
 ## [Homework #7](homework7.html)
+
+## [Homework #8](homework8.html)
 
 
 

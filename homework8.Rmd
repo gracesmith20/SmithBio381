@@ -1,0 +1,129 @@
+---
+title: "Homework 8"
+author: "Grace Smith"
+date: "2023-03-22"
+output: html_document
+---
+## Question 1
+Think about an ongoing study in your lab (or a paper you have read in a different class), and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
+
+Data from long-term silvicultural research on harvest treatments impacts on aboveground biomass. Treatments include Resistance, Resilience, Transition and Control. All treatments have 40 plots each, for a total of 160. Resistance was a thinning treatment and shouldn't see a high degree of biomass lost, same for Resilience, more intensive thinning. Transition would see higher removals of biomass as small gaps and thinnings were implemented. Control had no harvests and should have highest biomass. 
+
+## Question 2
+
+To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. You may need to consult some previous literature and/or an expert in the field to come up with these numbers.
+
+## Question 3
+
+Using the methods we have covered in class, write code to create a random data set that has these attributes. Organize these data into a data frame with the appropriate structure.
+
+```{r}
+
+library(tidyverse)
+
+# control treatment has plot mean of 150 Mg/ha, minimal variability
+CT <- rnorm(40, mean = 150, sd = 15)
+# resistance treatment has lower mean, still low variability
+RT <- rnorm(40, mean = 140, sd = 20)
+# resilience treatment has lower mean, and higher variability
+RL <- rnorm(40, mean = 130, sd = 35)
+# transition has lowest biomass, and most variability
+TR <- rnorm(40, mean = 120, sd = 50)
+
+my_data <- data.frame(CT, RT, RL, TR)
+
+my_data<-my_data %>% 
+  pivot_longer(cols=CT:TR,
+             names_to = "treatment",
+             values_to = "agb_Mg")
+
+
+head(my_data)
+```
+
+## Question 4
+
+Now write code to analyze the data (probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. Write code to generate a useful graph of the data.
+
+```{r}
+A1 <- aov(my_data$agb_Mg~my_data$treatment)
+summary(A1)
+
+library(ggplot2)
+
+ggplot(my_data) +
+  aes(x = treatment, y = agb_Mg, color = treatment) +
+  geom_boxplot() +
+  theme(legend.position = "none")
+
+```
+
+## Question 5
+
+Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
+
+It's significant 5/5 times...
+
+## Question 6
+
+Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the “effect size”) for you to still detect a significant pattern (p < 0.05)?
+```{r}
+# control treatment has plot mean of 150 Mg/ha, minimal variability
+CT <- rnorm(40, mean = 155, sd = 15)
+# resistance treatment has lower mean, still low variability
+RT <- rnorm(40, mean = 145, sd = 20)
+# resilience treatment has lower mean, and higher variability
+RL <- rnorm(40, mean = 125, sd = 35)
+# transition has lowest biomass, and most variability
+TR <- rnorm(40, mean = 110, sd = 50)
+
+adj_data <- data.frame(CT, RT, RL, TR)
+
+adj_data<-adj_data %>% 
+  pivot_longer(cols=CT:TR,
+             names_to = "treatment",
+             values_to = "agb_Mg")
+             
+
+
+A1 <- aov(adj_data$agb_Mg~adj_data$treatment)
+summary(A1)
+
+```
+
+
+## Question 7
+
+Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a feeling for the effect of random variation in the data.
+
+```{r}
+# control treatment has plot mean of 150 Mg/ha, minimal variability
+CT <- rnorm(10, mean = 155, sd = 15)
+# resistance treatment has lower mean, still low variability
+RT <- rnorm(10, mean = 145, sd = 20)
+# resilience treatment has lower mean, and higher variability
+RL <- rnorm(10, mean = 125, sd = 35)
+# transition has lowest biomass, and most variability
+TR <- rnorm(10, mean = 110, sd = 50)
+
+
+
+adj_data <- data.frame(CT, RT, RL, TR)
+
+adj_data<-adj_data %>% 
+  pivot_longer(cols=CT:TR,
+             names_to = "treatment",
+             values_to = "agb_Mg")
+             
+
+
+A1 <- aov(adj_data$agb_Mg~adj_data$treatment)
+summary(A1)
+
+#not significant at n=3 or 5, significant at n=10
+
+```
+
+
+
+
