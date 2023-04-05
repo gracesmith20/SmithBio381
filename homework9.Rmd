@@ -1,0 +1,33 @@
+---
+title: 'Homework #9'
+author: "Grace Smith"
+date: "2023-03-29"
+output: html_document
+---
+
+```{r}
+
+# load packages ---------------------------
+library(ggplot2)
+library(tidyverse)
+
+# source functions ---------------------------
+source("GetData.R")
+
+my_data <- get_data()
+
+better_data<-pivot_data(my_data)
+
+calculate_stuff(better_data)
+
+x <- graph_it(better_data)
+
+
+analyze()
+
+
+
+# y <- another_graph(better_data)
+# this isn't working......
+```
+

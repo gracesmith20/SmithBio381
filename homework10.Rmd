@@ -1,0 +1,174 @@
+---
+title: "Homework 10"
+author: "Grace Smith"
+date: "2023-04-05"
+output: html_document
+---
+
+## Question 1
+
+
+Using a for loop, write a function to calculate the number of zeroes in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the vector. Finally, use return(counter) for the output.
+
+```{r}
+##############################
+# FUNCTION: calculate_zeroes
+# packages: none
+# purpose:calculate number of zeroes in a numeric vector
+# input: 
+# output:
+# ---------------------------------
+
+calculate_zeroes <- function(x=c(0,5,8,0,7,0,4)) {
+  counter <- 0
+  for (i in seq_along(x)){
+    if(x[i] == 0)
+      counter <- counter + 1
+  
+  }
+  return(counter)
+}
+
+
+
+```
+
+```{r}
+calculate_zeroes()
+```
+
+## Question 2
+
+Use subsetting instead of a loop to rewrite the function as a single line of code.
+
+```{r}
+x <- c(0,5,8,0,7,0,4)
+
+length((x[x == 0]))
+```
+
+## Question 3
+
+Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
+
+```{r}
+##############################
+# FUNCTION: multi_matrix
+# packages: none
+# purpose:create matrix in which each element is the product of the row number X column number
+# input:
+# output:
+# ---------------------------------
+multi_matrix <- function() {
+  m <- matrix(nrow=3, ncol = 3)
+  for (i in 1:nrow(m)) {
+    for (j in 1:ncol(m)) {
+      m[i,j] <- i*j
+      
+    }
+    
+  }
+print(m)
+}
+```
+
+
+```{r}
+multi_matrix()
+```
+
+
+## Question 4
+
+In the next few lectures, you will learn how to do a randomization test on your data. We will complete some of the steps today to practice calling custom functions within a for loop. Use the code from the March 31st lecture (Randomization Tests) to complete the following steps:
+
+Simulate a dataset with 3 groups of data, each group drawn from a distribution with a different mean. The final data frame should have 1 column for group and 1 column for the response variable.
+
+```{r}
+library(ggplot2)
+set.seed(1000)
+
+trt_group <- c(rep("Control", 4),rep("Treatment1",4), rep("Treatment2", 4))
+print(trt_group)
+
+z<- c(runif(4) + 1, runif(4) + 10, runif(4) + 25)
+
+
+df <- data.frame(trt=trt_group,res=z)
+print(df)
+```
+
+
+
+Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
+
+Use a for loop to repeat the function in b 100 times. Store the results in a data frame that has 1 column indicating the replicate number and 1 column for each new group mean, for a total of 4 columns.
+
+
+
+```{r}
+##############################
+# FUNCTION: shuffle_data
+# packages: tidyverse
+# purpose:
+# input:
+# output:
+# ---------------------------------
+
+library(tidyverse)
+shuffle_data <- function(z=df) {
+      rep <- rep(NA,100)
+      Control <- rep(NA, 100)
+      Treatment1 <- rep(NA, 100)
+      Treatment2 <- rep(NA, 100)
+      
+      new_df<-data.frame(rep,Control,Treatment1,Treatment2)
+
+  
+  # for (i in 1:100){
+  #   new_df[i,1] <- i
+  for (i in 1:100){
+    new_df[i,1] <- i
+
+    df$res <- sample(df$res)
+    
+    a<-mean(df[1:4,2])
+    new_df[i,2]<- a
+    
+    b<-mean(df[5:8,2])
+    new_df[i,3] <- b
+    
+    c<-mean(df[9:12,2])
+    new_df[i,4] <- c
+
+    }
+
+return(new_df)
+  
+}
+  
+
+shuffle_data(df)
+
+
+
+```
+
+
+Use qplot() to create a histogram of the means for each reshuffled group. Or, if you want a challenge, use ggplot() to overlay all 3 histograms in the same figure. How do the distributions of reshuffled means compare to the original means?
+
+
+```{r}
+new_df <- shuffle_data(df)
+
+qplot(Control, data = new_df, geom = "histogram")
+
+qplot(Treatment1, data = new_df, geom = "histogram")
+
+qplot(Treatment2, data = new_df, geom = "histogram")
+
+
+```
+
+
+
