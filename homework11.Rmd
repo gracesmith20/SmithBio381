@@ -1,0 +1,78 @@
+---
+title: "homework11"
+author: "Grace Smith"
+date: "2023-04-12"
+output: html_document
+---
+
+```{r}
+##################################################
+# function: reg_stats
+# fits linear model, extracts statistics
+# input: 2-column data frame (x and y)
+# output: slope, p-value, and r2
+#------------------------------------------------- 
+aov_stats <- function(d=NULL) {
+             if(is.null(d)) {
+               x_var <- runif(10)
+               y_var <- runif(10)
+               d <- data.frame(x_var,y_var)
+             }
+  ANOVA <- aov(d[,2]~d[,1],
+           data = d)
+  . <- summary(ANOVA)[[1]][1,4:5]
+  # stats_list <- list(df=.[2,1],
+                     # p_val=.[1,5])
+  return(.)
+
+}
+
+```
+
+
+```{r}
+# packages
+library(tidyverse)
+
+# global variables
+file_folder <- "ORIGINALDATA/batch/"
+n_files <- 3
+file_out <- "StatsSummary.csv"
+
+file_names<-list.files(path=file_folder,
+                       pattern = "*.csv")
+
+# Create data frame to hold file summary statistics
+ID <- seq_along(file_names)
+file_name <- file_names
+Fvalue <- rep(NA,n_files)
+p_val <- rep(NA,n_files)
+
+stats_out <- data.frame(ID,file_name,Fvalue,p_val)
+
+
+
+
+# batch process by looping through individual files
+for (i in seq_along(file_names)) {
+  data <- read.table(file=paste(file_folder,file_names[i],sep=""),
+                     sep=",",
+                     header=TRUE) # read in next data file
+  
+  d_clean <- data %>%
+    select(Species, DBH..cm..2021)
+  
+  . <- aov_stats(d_clean) # pull regression stats from clean file
+  stats_out[i,3:4] <- unlist(.) # unlist, copy into last 3 columns
+  
+  boxplot(DBH..cm..2021 ~ Species,
+        data = d_clean)
+}
+
+
+
+
+print(stats_out)
+
+
+```
