@@ -1,0 +1,152 @@
+---
+title: "homework 12"
+author: "Grace Smith"
+date: "2023-04-19"
+output: html_document
+---
+
+Thanks for a great semester!! This class was increidbly helpful. 
+
+## Seedling Survival
+
+Treemap plot shows the health status of all species planted seedling in Fall 2022. 
+
+L = LIVE
+
+V = LOW VIGOR
+
+D = DEAD
+
+MIA = Species not found, no health status reported. 
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(treemap)
+
+x <-read_csv("ORIGINALDATA/CORSEEDLINGS.csv")
+
+head(x)
+
+unique(x$Species) #what species am I working with
+
+
+x_new <- x %>%
+  group_by(Species) %>%
+  count(F22Health)
+
+x_new$spcon <- paste(x_new$Species,x_new$F22Health)
+head(x_new)
+
+treemap(x_new,
+        index=c("F22Health","Species"),
+        vSize="n",
+        type="index",
+        title = "Seedling Health and Survival, 2022")
+
+
+```
+
+
+## Number of ind. by treatment
+
+```{r}
+trees <- read.csv("ORIGINALDATA/trees.csv")
+
+head(trees)
+
+trees$growth<-c(trees$DBH22 - trees$DBH21)
+head(trees)
+
+anyNA(trees)
+
+trees_clean <- trees[complete.cases(trees),] #remove any NA
+
+trees_clean$Plot<-as.factor(trees_clean$Plot) # changing from numeric to factor
+trees_clean$Species<-as.character(trees_clean$Species)
+
+unique(trees_clean$Species)
+
+library(dplyr)
+
+trees_clean <- trees_clean %>%
+  mutate(spp = case_when(
+    startsWith(Species, "AB") ~ "ABBA",
+    startsWith(Species, "PIR") ~ "PIRU",
+    startsWith(Species, "PIG") ~ "other softwood",
+    startsWith(Species, "LA") ~ "LALA",
+    startsWith(Species, "AC") ~ "hardwood",
+    startsWith(Species, "BE") ~ "hardwood",
+    startsWith(Species, "AM") ~ "hardwood",
+    startsWith(Species, "FA") ~ "hardwood",
+    startsWith(Species, "PIS") ~ "other softwood",
+    startsWith(Species, "TH") ~ "other softwood",
+    startsWith(Species, "PIM") ~ "other softwood",
+    startsWith(Species, "PR") ~ "hardwood",
+    startsWith(Species, "PO") ~ "hardwood"))
+
+unique(trees_clean$spp)
+library(magrittr)
+
+a<-trees_clean %>%
+  group_by(spp) %>%
+  summarise_at(vars(growth), list(name = mean))
+
+library(ggplot2)
+library(ggthemes)
+library(patchwork)
+library(colorblindr)
+library(cowplot)
+library(colorspace)
+library(wesanderson)
+library(ggsci)
+
+m1 <- ggplot(data=trees_clean) + 
+            aes(x=spp, fill=Treatment) + 
+            geom_bar()
+print(m1)
+
+
+```
+
+
+## Average growth by Species
+
+
+```{r}
+a<-trees_clean %>%
+  group_by(spp) %>%
+  summarise_at(vars(growth), list(name = mean))
+
+colnames(a) <- c('Species', 'Growth')
+head(a)
+
+
+p2 <- ggplot(a) +
+  aes(x=Species,y=Growth,fill=Species) +
+  geom_col()
+
+print(p2)
+```
+
+
+## Avg temp by plot
+
+```{r}
+library(ggplot2)
+
+d <- read.csv("ORIGINALDATA/data.csv")
+head(d)
+
+
+p1<- ggplot(d,
+            aes(x=Plot, y=Temp)) +
+  geom_boxplot(fill="forestgreen", alpha=0.2)+
+  xlab("Plot") +
+  ylab("Temp (C)")
+
+print(p1)
+
+```
+
